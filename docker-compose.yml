@@ -1,0 +1,41 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8.0 
+    container_name: mysql-container
+    ports:
+      - "3306:3306" # Mapea el puerto 3306 del host al contenedor
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=Patitas
+      - MYSQL_USER=db_user
+      - MYSQL_PASSWORD=databaseUser123
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql # Opcional: script de inicialización
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "3000:3000" # Mapea el puerto 3000 del host al contenedor
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8000/api # Cambiar según tu configuración
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000" # Mapea el puerto 8000 del host al contenedor
+    depends_on:
+      - db
+    command: ./init.sh
+
+  
+volumes:
+  db_data:
