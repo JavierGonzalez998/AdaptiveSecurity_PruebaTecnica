@@ -56,3 +56,10 @@ python manage.py migrate
 python manage.py runserver
 ```
 se crean las migraciones y se ejecutan para crear las tablas y los elementos a la base de datos. Finalmente se ejecuta el servidor.
+
+## Cuentas
+El proyecto tiene una cuenta con las funciones de Administrador, el cual es la siguiente:
+```
+test@test.com
+test123123
+```
